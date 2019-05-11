@@ -6,7 +6,7 @@
 ## Spring 2019
 
 
-## Due: Monday, May 10th on GitHub Classrooms
+## Due: Monday, June 10th on GitHub Classrooms
 
 ### Instructions:
 The goal of this project is to showcase your new-found knowledge of Python by applying it to a 
