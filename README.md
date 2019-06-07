@@ -28,3 +28,10 @@ code_of_state = ['01', '02']
 
 # 'S' is for states whereas 'U' is for Union Territories
 state_ut = ['S', 'U']
+
+
+for j in range(0, len(code_of_state)):
+    for i in range(0, len(page_number)):
+        for k in range(0, len(state_ut)): 
+          # page iterates over the changing URLs
+          page = requests.get('http://results.eci.gov.in/pc/en/constituencywise/Constituencywise' + state_ut[k] + code_of_state[j] + page_number[i] +'.htm')
