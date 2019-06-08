@@ -37,6 +37,13 @@ for j in range(0, len(code_of_state)):
           page = requests.get('http://results.eci.gov.in/pc/en/constituencywise/Constituencywise' + k + j + i +'.htm')
           soup = BeautifulSoup(page.content, 'html.parser')
           full_table = soup.find_all(attrs={"style":"font-size:12px;"})
-          if (len(full_table) is not 0):
-            number_of_candidates.append(len(full_table))
+          for td in full_table:
+            candidates.append(td.find(attrs={"align":"center"}).get_text())
+          number_of_candidates = number_of_candidates + [candidates[-1]]          
+          vote_row = soup.find(attrs={"style":"color: #fff; background: #105980; border-color:#673033; border-width:1px;border-style:Solid;font-family:Calibri;"})
+          if (vote_row is not None):
+            td_list = vote_row.find_all("td")
+            total_votes.append(td_list[5].get_text())
+            
+   
           
