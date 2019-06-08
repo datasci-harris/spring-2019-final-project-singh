@@ -30,9 +30,9 @@ code_of_state = ['01', '02']
 state_ut = ['S', 'U']
 
 
-for j in range(0, len(code_of_state)):
-    for i in range(0, len(page_number)):
-        for k in range(0, len(state_ut)): 
+for j in (code_of_state):
+    for i in (page_number):
+        for k in (state_ut): 
           # page iterates over the changing URLs
           page = requests.get('http://results.eci.gov.in/pc/en/constituencywise/Constituencywise' + k + j + i +'.htm')
           soup = BeautifulSoup(page.content, 'html.parser')
@@ -51,7 +51,6 @@ for j in range(0, len(code_of_state)):
  
  
  
- 
 for j in (code_of_state):
     for i in (page_number):
         for k in (state_ut):   
@@ -67,4 +66,4 @@ combined = zip(name_of_const, margin, party_name)
 df_const_margin_party = pd.DataFrame(np.array(combined), columns = list("abc"))
 df_const_margin_party.columns = ['Constituency', 'Margin', 'Party']
    
-          
+      
