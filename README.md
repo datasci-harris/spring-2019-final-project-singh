@@ -34,4 +34,9 @@ for j in range(0, len(code_of_state)):
     for i in range(0, len(page_number)):
         for k in range(0, len(state_ut)): 
           # page iterates over the changing URLs
-          page = requests.get('http://results.eci.gov.in/pc/en/constituencywise/Constituencywise' + state_ut[k] + code_of_state[j] + page_number[i] +'.htm')
+          page = requests.get('http://results.eci.gov.in/pc/en/constituencywise/Constituencywise' + k + j + i +'.htm')
+          soup = BeautifulSoup(page.content, 'html.parser')
+          full_table = soup.find_all(attrs={"style":"font-size:12px;"})
+          if (len(full_table) is not 0):
+            number_of_candidates.append(len(full_table))
+          
