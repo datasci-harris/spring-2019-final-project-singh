@@ -44,7 +44,10 @@ for j in range(0, len(code_of_state)):
           if (vote_row is not None):
             td_list = vote_row.find_all("td")
             total_votes.append(td_list[5].get_text())
- 
+          name_row = soup.find(class_="table-party")
+          if (name_row is not None):
+            tentative1_name_of_const.append(name_row.find("tr").get_text())
+            tentative2_name_of_const.append(tentative1_name_of_const[-1].strip().split("-"))  
  
  
  
