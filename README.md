@@ -44,6 +44,24 @@ for j in range(0, len(code_of_state)):
           if (vote_row is not None):
             td_list = vote_row.find_all("td")
             total_votes.append(td_list[5].get_text())
-            
+ 
+ 
+ 
+ 
+ 
+for j in (code_of_state):
+    for i in (page_number):
+        for k in (state_ut):   
+            page = requests.get('http://results.eci.gov.in/pc/en/trends/statewise' + k + j + i + '.htm')
+            soup = BeautifulSoup(page.content, 'html.parser')
+            full_table = soup.find_all(attrs={"style":"font-size:12px;"})
+            for td in full_table:
+                name_of_const.append(td.find('td').get_text())
+                margin.append(td.find(attrs={"align":"right"}).get_text())
+                party_name.append(td.find("tbody").find("td").get_text())
+
+combined = zip(name_of_const, margin, party_name)
+df_const_margin_party = pd.DataFrame(np.array(combined), columns = list("abc"))
+df_const_margin_party.columns = ['Constituency', 'Margin', 'Party']
    
           
