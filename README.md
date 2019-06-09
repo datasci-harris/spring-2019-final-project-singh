@@ -9,8 +9,8 @@
 ## Due: Monday, June 10th on GitHub Classrooms
 
 #the project's intention is to scrape data from Indian election 2019 for each of the 542 constituencies, and regress margin of victory in each constituency on a few different independent variables. 
-# the independent variables are: total number of votes cast in the constituency, total number of candidates in the constituency
-# there are two sets of URLs from which data has been scraped: 1. http://results.eci.gov.in/pc/en/trends/statewiseU011.htm; 2. http://results.eci.gov.in/pc/en/constituencywise/ConstituencywiseS033.htm
+#the independent variables are: total number of votes cast in the constituency, total number of candidates in the constituency
+#there are two sets of URLs from which data has been scraped: 1. http://results.eci.gov.in/pc/en/trends/statewiseU011.htm; 2. http://results.eci.gov.in/pc/en/constituencywise/ConstituencywiseS033.htm
 
 import csv
 import requests
@@ -22,11 +22,11 @@ import pandas as pd
 number_of_candidates = []
 
 #declaring lists of code of state and page numbers to deal with changing URLs
-# code_of_state deals with different states whereas page_number deals with constituencies within each state
+#code_of_state deals with different states whereas page_number deals with constituencies within each state
 page_number = ['1', '2', '3']
 code_of_state = ['01', '02']
 
-# 'S' is for states whereas 'U' is for Union Territories
+#'S' is for states whereas 'U' is for Union Territories
 state_ut = ['S', 'U']
 
 
@@ -53,8 +53,8 @@ temporary_tuple = tuple(tentative2_name_of_const)
 name_of_const = [t[1] for t in temporary_tuple] 
 combined_list = list(zip(name_of_const, number_of_candidates, total_votes))
 df_const_candidates_votes = pd.DataFrame(np.array(combined_list), columns = list("abc"))
-df_const_candidates_votes.columns = ['PC_NAME', 'Candidates', 'Votes']
-df_const_candidates_votes['PC_NAME'] = df_const_candidates_votes['PC_NAME'].str.upper() 
+df_const_candidates_votes.columns = ['Constituency', 'Candidates', 'Votes']
+df_const_candidates_votes['Constituency'] = df_const_candidates_votes['Constituency'].str.upper() 
 
 
  
@@ -75,4 +75,13 @@ df_const_margin_party.columns = ['Constituency', 'Margin', 'Party']
 df_const_margin_party['Constituency'] = df_const_margin_party['Constituency'].str.upper()
 df_const_margin_party['Margin'] = pd.to_numeric(df_const_margin_party['Margin'])
    
-      
+
+#merging of the above two dataframes
+election_data_merged = pd.merge(df_const_candidates_votes, df_const_margin_party, on='Constituency')
+
+#regression
+reg = linear_model.LinearRegression()
+reg.fit(election_data_merged[['Candidates', 'Votes']], election_data_merged['Margin'])
+
+
+
