@@ -83,5 +83,8 @@ election_data_merged = pd.merge(df_const_candidates_votes, df_const_margin_party
 reg = linear_model.LinearRegression()
 reg.fit(election_data_merged[['Candidates', 'Votes']], election_data_merged['Margin'])
 
-
-
+#chloropleth map
+india_shapefile = gpd.read_file("india.shp")
+data_shapefile_merged = election_data_merged.merge(india_shapefile, left_on="Constituency", right_on="PC_NAME", how="inner")
+variable = 'Margin'
+data_shapefile_merged.plot(variable, cmap='Reds', legend=True)
