@@ -131,9 +131,7 @@ def merge_df():
     df_const_margin_party = scrape2()
     election_data_merged = pd.merge(df_const_candidates_votes, df_const_margin_party, on='Constituency')
     #with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
-    #    print(dummy)
-    #with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
-    #    print(df_merged)
+    #    print(election_data_merged)
     return (election_data_merged)
 
 #this function does OLS modelling; dependent variable is Margin in each constituency, and independent variables are 
@@ -146,29 +144,31 @@ def regression():
 
 regression()
 
-#this function merges the merged dataframe with the shapefile on the columns "Constituency" and "PC_NAME"; it then plots the merged shapefile
+#this function merges the merged dataframe with the shapefile on the columns "Constituency" and "PC_NAME" 
+#it then plots the merged shapefile
 def chloropleth():
-    merged_df = merge_df()
+    election_data_merged = merge_df()
     india_shapefile = gpd.read_file("india.shp")
     #print(india_shapefile.dtypes)
     #print(merged_df.dtypes)
-    df_shapefile_merged = merged_df.merge(india_shapefile, left_on="Constituency", right_on="PC_NAME", how="inner")
+    data_shapefile_merged = election_data_merged.merge(india_shapefile, left_on="Constituency", right_on="PC_NAME", how="inner")
     variable = 'Margin'
-    #print(df_shapefile_merged.head())
-    #with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
-    #    print(df_shapefile_merged.head())
-    df_shapefile_merged.plot(variable, cmap='Reds', legend=True)
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+        print(df_shapefile_merged.head())
+    data_shapefile_merged.plot(variable, cmap='Reds', legend=True)
     
 chloropleth()
 
-
+#the function below is used to draw a pie chart and a bar chart
 def charts():
     merged_df = merge_df()
+    #the mean margin by party and seats by party are used to plot the bar chart and pie chart respectively
     mean_margin_by_party = merged_df.groupby(['Party']).mean()
     seats_by_party = merged_df.groupby(['Party']).count()
+    
     plot_pie = seats_by_party.plot.pie(y='Constituency', figsize=(4,4), autopct='%1.1f%%')
     plot_pie.legend(title="Party",loc="best", bbox_to_anchor=(1, 0, 0.5, 1))
-    print(mean_margin_by_party)
+    
     plot_bar = mean_margin_by_party['Margin'].plot(kind='bar', title ="Average Victory Margin by Party", figsize=(15, 10), legend=False, fontsize=12)
     plot_bar.set_xlabel("Party", fontsize=12)
     plot_bar.set_ylabel("Number of Votes", fontsize=12)
