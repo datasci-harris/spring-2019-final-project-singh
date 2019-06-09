@@ -36,28 +36,42 @@ number_of_candidates = []
 page_number = ['1', '2', '3']
 code_of_state = ['01', '02']
 
-#'S' is for states whereas 'U' is for Union Territories
+#'S' is for states, and 'U' is for Union Territories
 state_ut = ['S', 'U']
 
 
 #this method scrapes three variables - number of candidates, total votes polled and name of constituency - for each constituency
 
 def scrape1():
+    #declaring empty lists for each of the variables to be scraped
+    #the first variable to be scraped is name of constituency
+    name_of_const = []
+    #the tentative variables for names are used to get to the final variable 
     tentative1_name_of_const = []
     tentative2_name_of_const = []
-    name_of_const = []
+    #the second variable to be scraped is number of candidates in each constituency
     number_of_candidates = []
+    #the third variable to be scraped is total votes polled in each constituency
     total_votes = []
     td_list = []
 
     for j in (code_of_state):
         for i in (page_number):
             for k in (state_ut):  
+                #the variable page goes to each URL as they change
                 page = requests.get('http://results.eci.gov.in/pc/en/constituencywise/Constituencywise' + k + j + i +'.htm')
                 soup = BeautifulSoup(page.content, 'html.parser')
+                #the next three lines of code scrape number of candidates
+                #full_table scrapes the HTML code for each row except the last; each row is depicted by the tr tag "font-size:12px;" 
+                #the first column of each row contains the serial number of candidate; number of candidates is equal to 
+                #the final serial number, which is equal to length of full_table
                 full_table = soup.find_all(attrs={"style":"font-size:12px;"})
+                
+                #the if condition below is to deal with the fact that full_table will take null values for all URLs that don't exist.
+                #for example, the URL with code_of_state = 02 and page_number = 3 does not exist
                 if (len(full_table) is not 0):
                     number_of_candidates.append(len(full_table))
+                
                 vote_row = soup.find(attrs={"style":"color: #fff; background: #105980; border-color:#673033; border-width:1px;border-style:Solid;font-family:Calibri;"})
                 if (vote_row is not None):
                         td_list = vote_row.find_all("td")
@@ -66,6 +80,7 @@ def scrape1():
                 if (name_row is not None):
                     tentative1_name_of_const.append(name_row.find("tr").get_text())
                     tentative2_name_of_const.append(tentative1_name_of_const[-1].strip().split("-"))    
+    
     temporary_tuple = tuple(tentative2_name_of_const)
     name_of_const = [t[1] for t in temporary_tuple] 
     combined_list = list(zip(name_of_const, number_of_candidates, total_votes))
