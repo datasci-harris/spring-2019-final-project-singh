@@ -88,3 +88,14 @@ india_shapefile = gpd.read_file("india.shp")
 data_shapefile_merged = election_data_merged.merge(india_shapefile, left_on="Constituency", right_on="PC_NAME", how="inner")
 variable = 'Margin'
 data_shapefile_merged.plot(variable, cmap='Reds', legend=True)
+
+
+mean_margin_by_party = election_data_merged.groupby(['Party']).mean()
+seats_by_party = election_data_merged.groupby(['Party']).count()
+plot_pie = seats_by_party.plot.pie(y='Constituency', figsize=(5,5), autopct='%1.1f%%')
+plot_pie.legend(title="Party",loc="best", bbox_to_anchor=(1, 0, 0.5, 1))
+print(mean_margin_by_party)
+plot_bar = mean_margin_by_party['Margin'].plot(kind='bar', title ="Average Victory Margin by Party", figsize=(15, 10), legend=False, fontsize=12)
+plot_bar.set_xlabel("Party", fontsize=12)
+plot_bar.set_ylabel("Number of Votes", fontsize=12)
+plt.show()
