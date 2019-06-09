@@ -9,13 +9,21 @@
 ## Due: Monday, June 10th on GitHub Classrooms
 
 #the project's intention is to scrape data from Indian election 2019 for each of the 542 constituencies, and regress margin of victory in each constituency on a few different independent variables. 
-#the independent variables are: total number of votes cast in the constituency, total number of candidates in the constituency
+#the independent variables are: total number of votes cast in each constituency, total number of candidates in each constituency
+
 #there are two sets of URLs from which data has been scraped: 1. http://results.eci.gov.in/pc/en/trends/statewiseU011.htm; 2. http://results.eci.gov.in/pc/en/constituencywise/ConstituencywiseS033.htm
+#the above two URLs change their numbers to show data for different constituencies 
 
 import csv
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import statsmodels.formula.api as sm
+from sklearn import linear_model
+import geopandas as gpd
+import matplotlib.pyplot as plt
+from pandas.tools.plotting import table
+
 
 #declaring empty lists for each of the variables to be scraped
 #the first variable to be scraped is number of candidates in each constituency
