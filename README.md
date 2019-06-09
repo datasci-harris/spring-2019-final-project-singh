@@ -109,6 +109,7 @@ def scrape2():
             for k in (state_ut):   
                     page = requests.get('http://results.eci.gov.in/pc/en/trends/statewise' + k + j + i + '.htm')
                     soup = BeautifulSoup(page.content, 'html.parser')
+                    #full_table scrapes the HTML code for the whole table
                     full_table = soup.find_all(attrs={"style":"font-size:12px;"})
                     for td in full_table:
                         name_of_const.append(td.find('td').get_text())
@@ -118,7 +119,9 @@ def scrape2():
     combined = list(zip(name_of_const, margin, party_name))
     df_const_margin_party = pd.DataFrame(np.array(combined), columns = list("abc"))
     df_const_margin_party.columns = ['Constituency', 'Margin', 'Party']
+    #converting to upper case for (later) merging with the shapefile 
     df_const_margin_party['Constituency'] = df_const_margin_party['Constituency'].str.upper()
+    #converting the column Margin to numeric type for mathematical operations
     df_const_margin_party['Margin'] = pd.to_numeric(df_const_margin_party['Margin'])
     #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     #    print(df_const_margin_party)
