@@ -48,8 +48,15 @@ for j in (code_of_state):
           if (name_row is not None):
             tentative1_name_of_const.append(name_row.find("tr").get_text())
             tentative2_name_of_const.append(tentative1_name_of_const[-1].strip().split("-"))  
- 
- 
+
+temporary_tuple = tuple(tentative2_name_of_const)
+name_of_const = [t[1] for t in temporary_tuple] 
+combined_list = list(zip(name_of_const, number_of_candidates, total_votes))
+df_const_candidates_votes = pd.DataFrame(np.array(combined_list), columns = list("abc"))
+df_const_candidates_votes.columns = ['PC_NAME', 'Candidates', 'Votes']
+df_const_candidates_votes['PC_NAME'] = df_const_candidates_votes['PC_NAME'].str.upper() 
+
+
  
 for j in (code_of_state):
     for i in (page_number):
@@ -62,8 +69,10 @@ for j in (code_of_state):
                 margin.append(td.find(attrs={"align":"right"}).get_text())
                 party_name.append(td.find("tbody").find("td").get_text())
 
-combined = zip(name_of_const, margin, party_name)
+combined = list(zip(name_of_const, margin, party_name))
 df_const_margin_party = pd.DataFrame(np.array(combined), columns = list("abc"))
 df_const_margin_party.columns = ['Constituency', 'Margin', 'Party']
+df_const_margin_party['Constituency'] = df_const_margin_party['Constituency'].str.upper()
+df_const_margin_party['Margin'] = pd.to_numeric(df_const_margin_party['Margin'])
    
       
