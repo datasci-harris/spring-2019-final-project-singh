@@ -26,6 +26,9 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 from pandas.tools.plotting import table
 
+#path defined to read shapefile
+path = r'C:/Users/adminuser/Downloads/Python codes/Beautiful Soup'
+
 
 #declaring empty lists for each of the variables to be scraped
 #the first variable to be scraped is number of candidates in each constituency
@@ -150,11 +153,9 @@ regression()
 #this function merges the merged dataframe with the shapefile on the columns "Constituency" and "PC_NAME" 
 #it then plots the merged shapefile
 def chloropleth():
-    election_data_merged = merge_df()
+    df_for_chloropleth = merge_df()
     india_shapefile = gpd.read_file("india.shp")
-    #print(india_shapefile.dtypes)
-    #print(merged_df.dtypes)
-    data_shapefile_merged = election_data_merged.merge(india_shapefile, left_on="Constituency", right_on="PC_NAME", how="inner")
+    data_shapefile_merged = df_for_chloropleth.merge(india_shapefile, left_on="Constituency", right_on="PC_NAME", how="inner")
     variable = 'Margin'
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
         print(df_shapefile_merged.head())
@@ -164,10 +165,10 @@ chloropleth()
 
 #the function below is used to draw a pie chart and a bar chart
 def charts():
-    merged_df = merge_df()
+    df_for_charts = merge_df()
     #the mean margin by party and seats by party are used to plot the bar chart and pie chart respectively
-    mean_margin_by_party = merged_df.groupby(['Party']).mean()
-    seats_by_party = merged_df.groupby(['Party']).count()
+    mean_margin_by_party = df_for_charts.groupby(['Party']).mean()
+    seats_by_party = df_for_charts.groupby(['Party']).count()
     
     plot_pie = seats_by_party.plot.pie(y='Constituency', figsize=(4,4), autopct='%1.1f%%')
     plot_pie.legend(title="Party",loc="best", bbox_to_anchor=(1, 0, 0.5, 1))
