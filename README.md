@@ -61,7 +61,7 @@ def scrape1():
                 #the variable page goes to each URL as they change
                 page = requests.get('http://results.eci.gov.in/pc/en/constituencywise/Constituencywise' + k + j + i +'.htm')
                 soup = BeautifulSoup(page.content, 'html.parser')
-                #the next three lines of code scrape number of candidates
+                #the next three lines of code scrape number of candidates in each constituency
                 #full_table scrapes the HTML code for each row except the last; each row is depicted by the tr tag "font-size:12px;" 
                 #the first column of each row contains the serial number of candidate; number of candidates is equal to 
                 #the final serial number, which is equal to length of full_table
@@ -71,25 +71,33 @@ def scrape1():
                 #for example, the URL with code_of_state = 02 and page_number = 3 does not exist
                 if (len(full_table) is not 0):
                     number_of_candidates.append(len(full_table))
-                
+                # the next 4 lines scrape total votes polled in each constituency
                 vote_row = soup.find(attrs={"style":"color: #fff; background: #105980; border-color:#673033; border-width:1px;border-style:Solid;font-family:Calibri;"})
                 if (vote_row is not None):
                         td_list = vote_row.find_all("td")
                         total_votes.append(td_list[5].get_text())
                 name_row = soup.find(class_="table-party")
+                #the if condition used below is used to deal with the issue of null values, as done above
                 if (name_row is not None):
                     tentative1_name_of_const.append(name_row.find("tr").get_text())
+                    # the name is split on "-" because it's initially scraped as <Name of State-Name of Constituency>
                     tentative2_name_of_const.append(tentative1_name_of_const[-1].strip().split("-"))    
+    #the tuple is used to extract Name of Constituency after splitting on "-" 
+    temporary_tuple_for_name = tuple(tentative2_name_of_const)
+    name_of_const = [t[1] for t in temporary_tuple_for_name]
     
-    temporary_tuple = tuple(tentative2_name_of_const)
-    name_of_const = [t[1] for t in temporary_tuple] 
     combined_list = list(zip(name_of_const, number_of_candidates, total_votes))
+    
+    #converting list to dataframe
     df_const_candidates_votes = pd.DataFrame(np.array(combined_list), columns = list("abc"))
     df_const_candidates_votes.columns = ['Constituency', 'Candidates', 'Votes']
+    
+    #name of each constituency changed to uppercase to (later) merge correctly with the names given in shapefile
     df_const_candidates_votes['Constituency'] = df_const_candidates_votes['Constituency'].str.upper()
     return(df_const_candidates_votes)
 
-#this method scrapes three variables - margin of victory of winning candidate, party of winning candidate and name of constituency - for each constituency
+#this method scrapes three variables - margin of victory of winning candidate, party of winning candidate and name of constituency - 
+#for each constituency
 
 def scrape2():
     name_of_const = []
