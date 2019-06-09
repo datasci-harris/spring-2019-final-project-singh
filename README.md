@@ -8,10 +8,12 @@
 
 ## Due: Monday, June 10th on GitHub Classrooms
 
-#the project's intention is to scrape data from Indian election 2019 for each of the 542 constituencies, and regress margin of victory in each constituency on a few different independent variables. 
+#the project's intention is to scrape data from Indian election 2019 for each of the 542 constituencies, and regress
+#margin of victory in each constituency on a few different independent variables. 
 #the independent variables are: total number of votes cast in each constituency, total number of candidates in each constituency
 
-#there are two sets of URLs from which data has been scraped: 1. http://results.eci.gov.in/pc/en/trends/statewiseU011.htm; 2. http://results.eci.gov.in/pc/en/constituencywise/ConstituencywiseS033.htm
+#there are two sets of URLs from which data has been scraped: 1. http://results.eci.gov.in/pc/en/trends/statewiseU011.htm; 
+#2. http://results.eci.gov.in/pc/en/constituencywise/ConstituencywiseS033.htm
 #the above two URLs change their numbers to show data for different constituencies 
 
 import csv
@@ -39,6 +41,7 @@ state_ut = ['S', 'U']
 
 
 #this method scrapes three variables - number of candidates, total votes polled and name of constituency - for each constituency
+
 def scrape1():
     tentative1_name_of_const = []
     tentative2_name_of_const = []
@@ -72,6 +75,7 @@ def scrape1():
     return(df_const_candidates_votes)
 
 #this method scrapes three variables - margin of victory of winning candidate, party of winning candidate and name of constituency - for each constituency
+
 def scrape2():
     name_of_const = []
     margin = []
@@ -98,6 +102,7 @@ def scrape2():
     return(df_const_margin_party)        
         
 #this function merges the above two dataframes            
+
 def merge_df():
     df_const_candidates_votes = scrape1()
     df_const_margin_party = scrape2()
@@ -106,10 +111,10 @@ def merge_df():
     #    print(dummy)
     #with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
     #    print(df_merged)
-   
     return (election_data_merged)
 
-
+#this function does OLS modelling; dependent variable is Margin in each constituency, and independent variables are 
+#number of canadidates and votes polled in each constituency
 def regression():
     election_data_merged = merge_df()
     reg = linear_model.LinearRegression()
