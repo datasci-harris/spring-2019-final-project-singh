@@ -31,9 +31,14 @@ import matplotlib.pyplot as plt
 from pandas.tools.plotting import table
 
 #page_number, code_of_state and state_ut are to access different URLs from which scraping has to be done
-page_number = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44','45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80']
-code_of_state = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29']
+# in order to make the code run quickly, only limited number of page numbers and codes of state have been provided below
+# to run the full code, which will take a long time, the lists for page numbers and codes of state can be appended from the two "remaining" lists mentioned later
+page_number = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+code_of_state = ['01', '02', '03', '04', '05', '06']
 state_ut = ['S', 'U']
+#highest value for page number = 80, and highest value for code of state = 29
+remaining_page_number = ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44','45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80']
+remaining_code_of_state = [, '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29']
 
 #this method scrapes three variables - number of candidates, total votes polled and name of constituency - for each constituency
 def scrape1():
