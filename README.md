@@ -100,6 +100,10 @@ def scrape1():
     df_const_candidates_votes = pd.DataFrame(np.array(combined_list), columns = list("abc"))
     df_const_candidates_votes.columns = ['Constituency', 'Candidates', 'Votes']
     
+    #converting the columns Candidates and Votes to numeric type for mathematical operations
+    df_const_candidates_votes['Candidates'] = pd.to_numeric(df_const_candidates_votes['Candidates'])
+    df_const_candidates_votes['Votes'] = pd.to_numeric(df_const_candidates_votes['Votes'])
+    
     #name of each constituency changed to uppercase to (later) merge correctly with the names given in shapefile
     df_const_candidates_votes['Constituency'] = df_const_candidates_votes['Constituency'].str.upper()
     return(df_const_candidates_votes)
@@ -141,7 +145,7 @@ def merge_df():
     df_const_candidates_votes = scrape1()
     df_const_margin_party = scrape2()
     election_data_merged = pd.merge(df_const_candidates_votes, df_const_margin_party, on='Constituency')
-    #with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+    #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     #    print(election_data_merged)
     return (election_data_merged)
 
@@ -149,9 +153,11 @@ def merge_df():
 #number of canadidates and votes polled in each constituency
 def regression():
     election_data_merged = merge_df()
-    reg = linear_model.LinearRegression()
-    reg.fit(election_data_merged[['Candidates', 'Votes']], election_data_merged['Margin'])
-    print(reg.coef_)
+    x = election_data_merged[['Candidates', 'Votes']]
+    y = election_data_merged['Margin']
+    x = sm.add_constant(x)
+    model_election_data = sm.OLS(y, x).fit()
+    print(model_election_data.summary())
 
 regression()
 
