@@ -29,7 +29,6 @@ from pandas.tools.plotting import table
 #path defined to read shapefile
 path = r'C:/Users/adminuser/Downloads/Python codes/Beautiful Soup'
 
-
 #declaring empty lists for each of the variables to be scraped
 #the first variable to be scraped is number of candidates in each constituency
 number_of_candidates = []
@@ -47,9 +46,7 @@ code_of_state = ['09' , '10', '11', '12', '13', '14', '15', '16', '17', '18', '1
 #'S' is for states, and 'U' is for Union Territories
 state_ut = ['S', 'U']
 
-
 #this method scrapes three variables - number of candidates, total votes polled and name of constituency - for each constituency
-
 def scrape1():
     #declaring empty lists for each of the variables to be scraped
     #the first variable to be scraped is name of constituency
@@ -106,11 +103,12 @@ def scrape1():
     
     #name of each constituency changed to uppercase to (later) merge correctly with the names given in shapefile
     df_const_candidates_votes['Constituency'] = df_const_candidates_votes['Constituency'].str.upper()
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        print(df_const_candidates_votes)
     return(df_const_candidates_votes)
 
 #this method scrapes three variables - margin of victory of winning candidate, party of winning candidate and name of constituency - 
 #for each constituency
-
 def scrape2():
     name_of_const = []
     margin = []
@@ -135,18 +133,17 @@ def scrape2():
     df_const_margin_party['Constituency'] = df_const_margin_party['Constituency'].str.upper()
     #converting the column Margin to numeric type for mathematical operations
     df_const_margin_party['Margin'] = pd.to_numeric(df_const_margin_party['Margin'])
-    #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    #    print(df_const_margin_party)
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        print(df_const_margin_party)
     return(df_const_margin_party)        
         
 #this function merges the above two dataframes            
-
 def merge_df():
     df_const_candidates_votes = scrape1()
     df_const_margin_party = scrape2()
     election_data_merged = pd.merge(df_const_candidates_votes, df_const_margin_party, on='Constituency')
-    #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    #    print(election_data_merged)
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        print(election_data_merged)
     return (election_data_merged)
 
 #this function does OLS modelling; dependent variable is Margin in each constituency, and independent variables are 
@@ -168,7 +165,7 @@ def chloropleth():
     india_shapefile = gpd.read_file("path/india.shp")
     data_shapefile_merged = df_for_chloropleth.merge(india_shapefile, left_on="Constituency", right_on="PC_NAME", how="inner")
     variable = 'Margin'
-    with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
         print(df_shapefile_merged.head())
     data_shapefile_merged.plot(variable, cmap='Reds', legend=True)
     
