@@ -165,7 +165,7 @@ regression()
 #it then plots the merged shapefile
 def chloropleth():
     df_for_chloropleth = merge_df()
-    india_shapefile = gpd.read_file("india.shp")
+    india_shapefile = gpd.read_file("path/india.shp")
     data_shapefile_merged = df_for_chloropleth.merge(india_shapefile, left_on="Constituency", right_on="PC_NAME", how="inner")
     variable = 'Margin'
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
