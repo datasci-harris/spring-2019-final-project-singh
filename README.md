@@ -8,6 +8,8 @@
 
 ## Due: Monday, June 10th on GitHub Classrooms
 
+*ok*
+
 #the project's intention is to scrape data from Indian election 2019 for each of the 542 constituencies, and regress
 #margin of victory in each constituency on a few different independent variables. 
 #the independent variables are: total number of votes cast in each constituency, total number of candidates in each constituency
