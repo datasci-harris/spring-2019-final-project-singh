@@ -178,8 +178,10 @@ def charts():
     mean_margin_by_party = df_for_charts.groupby(['Party']).mean()
     seats_by_party = df_for_charts.groupby(['Party']).count()
     
-    plot_pie = seats_by_party.plot.pie(y='Constituency', figsize=(4,4), autopct='%1.1f%%')
-    plot_pie.legend(title="Party",loc="best", bbox_to_anchor=(1, 0, 0.5, 1))
+    seats_by_party.plot.pie(y='Constituency', figsize=(6,6), autopct='%1.1f%%', title = 'Seat Share By Party', labels = None)
+    plt.legend(title="Party",loc="best", labels= seats_by_party['Party'],  bbox_to_anchor=(1, 10))
+    plt.ylabel('')
+    plt.show()
     
     plot_bar = mean_margin_by_party['Margin'].plot(kind='bar', title ="Average Victory Margin by Party", figsize=(15, 10), legend=False, fontsize=12)
     plot_bar.set_xlabel("Party", fontsize=12)
