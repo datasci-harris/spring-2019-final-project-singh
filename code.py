@@ -28,39 +28,18 @@ import statsmodels.api as sm
 from sklearn import linear_model
 import geopandas as gpd
 import matplotlib.pyplot as plt
-
-#the project's intention is to scrape data from Indian election 2019 for each of the 542 constituencies, and regress
-#margin of victory in each constituency on a few different independent variables. 
-#the independent variables are: total number of votes cast in each constituency, total number of candidates in each constituency
-
-#there are two sets of URLs from which data has been scraped: 1. http://results.eci.gov.in/pc/en/trends/statewiseU011.htm; 
-#2. http://results.eci.gov.in/pc/en/constituencywise/ConstituencywiseS033.htm
-#the above two URLs change their numbers to show data for different constituencies
-
-#path defined to read shapefile
-path = r'C:/Users/adminuser/Downloads/Python codes/Beautiful Soup'
-
+from pandas.tools.plotting import table
 
 #page_number, code_of_state and state_ut are to access different URLs from which scraping has to be done
-# in order to make the code run quickly, only limited number of page numbers and codes of state have been provided below
-# to run the full code, which will take a long time, the lists for page numbers and codes of state can be appended from the two "remaining" lists mentioned later
-page_number = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-code_of_state = ['01', '02', '03', '04', '05', '06']
-#'S' is for states, and 'U' is for Union Territories
+page_number = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44','45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80']
+code_of_state = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29']
 state_ut = ['S', 'U']
-
-#highest value for page number = 80, and highest value for code of state = 29
-remaining_page_number = ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44','45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80']
-remaining_code_of_state = [, '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29']
 
 #this method scrapes three variables - number of candidates, total votes polled and name of constituency - for each constituency
 def scrape1():
-    #declaring empty lists for each of the variables to be scraped
-    #the first variable to be scraped is name of constituency
-    name_of_const = []
-    #the tentative variables for names are used to get to the final variable 
     tentative1_name_of_const = []
     tentative2_name_of_const = []
+    name_of_const = []
     number_of_candidates = []
     total_votes = []
     td_list = []
@@ -139,9 +118,8 @@ def regression():
     print(model_election_data.summary())
 regression()
 
-# this function merges the merged dataframe with the shapefile on the columns Constituency and PC_NAME; 
-# it then plots the merged shapefile
-
+# this function merges the merged dataframe with the shapefile on the columns Constituency and PC_NAME; it then tries to plot the merged shapefile, but nothing shows up except a square and some labels
+"""
 def chloropleth():
     merged_df = merge_df()
     india_shapefile = gpd.read_file("india.shp")
@@ -155,16 +133,17 @@ def chloropleth():
     df_shapefile_merged.plot(variable, cmap='Reds', legend=True)
     
 chloropleth()
-
-
+"""
+"""
 def charts():
     merged_df = merge_df()
     mean_margin_by_party = merged_df.groupby(['Party']).mean()
     seats_by_party = merged_df.groupby(['Party']).count()
     
-    seats_by_party.plot.pie(y='Constituency', figsize=(6,6), autopct='%1.1f%%', title = 'Seat Share By Party', labels = None)
-    plt.legend(title="Party",loc="best", labels= seats_by_party['Party'],  bbox_to_anchor=(1, 10))
-    plt.ylabel('')
+    #plot_pie = seats_by_party.plot.pie(y='Constituency', figsize=(4,4), autopct='%1.1f%%', labels = None)
+    #plot_pie.legend(title="Party",loc="best", bbox_to_anchor=(1, 0, 0.5, 1))
+    seats_by_party['Constituency'].plot(kind='pie', autopct='%1.1f%%', labels=['','','','','','',''],  ax=ax, title="Party", fontsize=10)
+    ax.legend(loc="best", labels="Party")
     plt.show()
 
     
