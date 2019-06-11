@@ -112,7 +112,7 @@ def scrape_name_margin_party():
 
 #this function writes name of constituency, margin of victory and party of winning candidate to a CSV file
 def write_second_csv_file():
-    combined_name_margin_party = scrape_name_margin_party
+    combined_name_margin_party = scrape_name_margin_party()
     with open('const_margin_party.csv', 'w') as csvFile:
        w = csv.writer(csvFile)
        w.writerow(['Constituency', 'Margin', 'Party'])
@@ -120,4 +120,4 @@ def write_second_csv_file():
            if data:
                w.writerow(data)
     
-write_second_csv_file    
+write_second_csv_file()    
