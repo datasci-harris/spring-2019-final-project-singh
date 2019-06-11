@@ -63,6 +63,7 @@ chloropleth()
 
 #this function is used to draw a pie chart and a bar chart
 def charts():
+    election_data_merged = data_merge()
     mean_margin_by_party = election_data_merged.groupby(['Party']).mean()
     seats_by_party = election_data_merged.groupby(['Party']).count()
 
