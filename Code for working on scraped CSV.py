@@ -12,6 +12,8 @@ from sklearn import linear_model
 import geopandas as gpd
 import matplotlib.pyplot as plt
 
+path = r'./'
+
 #this function reads the CSV files created through scraping
 def data_read():
     const_candidates_votes = pd.read_csv("const_candidates_votes.csv")
