@@ -4,6 +4,14 @@ Created on Mon Jun 10 20:41:32 2019
 
 @author: adminuser
 """
+#the project's intention is to scrape data from Indian election 2019 for each of the 542 constituencies, and regress
+#margin of victory in each constituency on a few different independent variables. 
+#the independent variables are: total number of votes cast in each constituency, total number of candidates in each constituency
+
+#there are two sets of URLs from which data has been scraped: 1. http://results.eci.gov.in/pc/en/trends/statewiseU011.htm; 
+#2. http://results.eci.gov.in/pc/en/constituencywise/ConstituencywiseS033.htm
+#the above two URLs change their numbers to show data for different constituencies 
+
 
 import csv
 import requests
@@ -13,17 +21,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #page_number, code_of_state and state_ut are to access different URLs from which scraping has to be done
+#max value of page_number = 80 and max value of code_of_state = 29
+#code_of_state = 09 has been dropped from this analysis because of the anomalous structure of the page (its additional column 'migrant votes' makes scraping difficult)
 page_number = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44','45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80']
 code_of_state = ['01', '02', '03', '04', '05', '06', '07', '08', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29']
+#'S' is for states, and 'U' is for Union Territories
 state_ut = ['S', 'U']
 
 #this method scrapes three variables - number of candidates, total votes polled and name of constituency - for each constituency
 def scrape1():
+    #declaring empty lists for each of the variables to be scraped
+    #the first variable to be scraped is name of constituency
+    name_of_const = []
+    #the tentative variables for name of constituency are used to get to the final name 
     tentative1_name_of_const = []
     tentative2_name_of_const = []
-    name_of_const = []
+    #the second variable to be scraped is number of candidates in each constituency
     number_of_candidates = []
+    #the third variable to be scraped is total votes polled in each constituency
     total_votes = []
+    #td_list is used to scrape td tags, in order to append total_votes 
     td_list = []
 
     for j in (code_of_state):
