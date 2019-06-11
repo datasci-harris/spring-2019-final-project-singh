@@ -54,8 +54,10 @@ def chloropleth():
     data_shapefile_merged = india_shapefile.merge(election_data_merged, right_on="Constituency", left_on="PC_NAME", how="inner")
     plot1 = 'Margin'
     plot2 = 'Margin Percentage'
-    data_shapefile_merged.plot(plot1, cmap='Reds', legend=True, title = 'Absolute Margin ')
-    data_shapefile_merged.plot(plot2, cmap='Reds', legend=True, title = 'Margin as % of votes polled')
+    chloropleth_absolute_margin = data_shapefile_merged.plot(plot1, cmap='Reds', legend=True)
+    chloropleth_absolute_margin.legend(title="Absolute Margin")
+    chloropleth_relative_margin = data_shapefile_merged.plot(plot2, cmap='Reds', legend=True)
+    chloropleth_relative_margin.legend(title="Percentage Margin")
 
 chloropleth()
 
