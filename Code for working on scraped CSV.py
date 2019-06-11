@@ -27,9 +27,10 @@ def data_read():
 #this function merges the above two dataframes
 def data_merge():
     const_candidates_votes, const_margin_party = data_read()
+    #converted to uppercase to merge with shapefile later
     const_margin_party['Constituency'] = const_margin_party['Constituency'].str.upper()
     const_candidates_votes['Constituency'] = const_candidates_votes['Constituency'].str.upper()
-
+    
     election_data_merged = pd.merge(const_candidates_votes, const_margin_party, on='Constituency')
     print(election_data_merged.head())      
     return(election_data_merged)
