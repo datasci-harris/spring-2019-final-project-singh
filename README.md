@@ -10,5 +10,5 @@
 
 The project is divided into two .py files - one for scraping data off the web (named "Code to scrape data") and storing it in two separate CSV files, and the other for performing operations on the CSV files created (named "Code for working on scraped CSV")
 
-The repository contains the 2 code files, 4 .png files including two chloropleth maps, the shapefile named "india" for the chloropleth maps, and a word file explaining the project 
+The repository contains the 2 code files, 4 .png files including two chloropleth maps, 1 .txt file containing the link to the shapefile named "india" for the chloropleth maps, and a word file explaining the project 
 
